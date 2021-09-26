@@ -1,21 +1,25 @@
 import React from 'react';
-import { Text, View, FlatList} from 'react-native';
-import {Container, Header, Content} from './styles';
-import Tittle from './components/Tittle/Tittle';
-import MainFunction from './components/Main/Main';
-
-
+import {NavigationContainer} from '@react-navigation/native';
+import { View, StyleSheet } from 'react-native';
+import Routes from './routes';
+import Home from './screens/Home';
 export default function Index() {
   return (
-    <Container>
-      <Content>
-        <Header>
-          <Tittle></Tittle>
-        </Header>
+    // <NavigationContainer>
+      //<Routes/>
+    //* </NavigationContainer> */}
 
-        <MainFunction></MainFunction>
-      </Content>
-      
-    </Container>
-  );
+    <View style={styles.container}>
+      <Routes/>
+    </View>
+    // <>
+    // <Home/>
+    // </>
+  )
 }
+
+const styles = StyleSheet.create({
+  container:{
+    backgroundColor: "#444444"
+  },
+})

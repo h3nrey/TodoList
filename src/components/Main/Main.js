@@ -4,7 +4,7 @@ import {View, Text } from 'react-native';
 import {Main, AddBlock, InputText, Tittle, AddTaskButton, PlaneList} from './Style';
 import {TaskTittle, StyledView, StyledTextInput} from  '../Task/Style';
 
-export default function MainFunction() {
+export default function MainFunction(rota) {
 
   const [initialElements, changeEl]  = useState([
     // { id : "0", tittle : "Object 1"},
@@ -34,10 +34,13 @@ export default function MainFunction() {
       }
     ]
 
-    function Task({task}) {
+    function Task({task, navigation, route}) {
       return(
       <View>
-        <StyledView>
+        <StyledView onPress={() => {
+          alert(rota)
+          navigation.navigate(rota)
+        }}>
             <TaskTittle>{task.tittle}#</TaskTittle>
             <StyledTextInput placeholder="Texto da tarefa..."></StyledTextInput>
         </StyledView>
@@ -53,7 +56,7 @@ export default function MainFunction() {
           </AddBlock>
           <PlaneList
             data={exampleState}
-            renderItem= {( {item}) => <Task task={item} ></Task>
+            renderItem= {( {item}) => <Task task={item, rota} ></Task>
             }
           />
         </Main>
