@@ -1,13 +1,24 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, {UseSate} from 'react';
+import {Container, Header, HeaderTittle, Main, TaskContainer, TaskStyle, TaskTittle, TaskDetailsContainer,TaskDetailsEditButton, TaskDetailsDeleteButton, TaskDetailsButtonsContainer, TaskDetaisInputText} from './../../styles'
 
-const Details = () => {
+const Details = ({route}) => {
+  const [value, onChangeText] = React.useState("babu");
+
   return (
-      <View>
-          <Text>
-            Details
-          </Text>
-      </View>
+    <Container>
+    <Main>
+      <TaskDetailsContainer>
+        <TaskTittle>{route.params.post}</TaskTittle>
+        <TaskDetaisInputText multiline numberOfLines={20} onChangeText={text => onChangeText(text)}
+        value={value}/>
+      </TaskDetailsContainer>
+      <TaskDetailsButtonsContainer>
+
+      <TaskDetailsEditButton>Editar</TaskDetailsEditButton>
+        <TaskDetailsDeleteButton>Deletar</TaskDetailsDeleteButton>
+      </TaskDetailsButtonsContainer>
+    </Main>
+  </Container>
   );
 }
 

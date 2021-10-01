@@ -9,17 +9,8 @@ export default function Index() {
       //<Routes/>
     //* </NavigationContainer> */}
 
-    <View style={styles.container}>
+    <>
       <Routes/>
-    </View>
-    // <>
-    // <Home/>
-    // </>
+    </>
   )
 }
-
-const styles = StyleSheet.create({
-  container:{
-    backgroundColor: "#444444"
-  },
-})

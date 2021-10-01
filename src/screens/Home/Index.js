@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import { View, Text, Button } from 'react-native';
-import {Container, Header, Content} from '../../styles';
-import HeaderTittle from '../../components/Tittle/Tittle';
-import {Main, AddBlock, InputText, Tittle, AddTaskButton, PlaneList} from '../../components/Main/Style';
-import {TaskTittle, StyledView, StyledTextInput} from  '../../components/Task/Style';
+import { View, Text, TouchableOpacity } from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {Container, Header, HeaderTittle, Main, AddTaskHolder, AddTaskTittle, AddTaskInput, AddTaskButton, TaskInputHolder, TaskContainer, TaskStyle, TaskTittle, TaskTextContainer, TaskText} from './../../styles'
+
 
 export default function Home ({navigation}) {
 
@@ -13,7 +12,7 @@ export default function Home ({navigation}) {
     // { id : "1", tittle : "Object 2"},
   ]);
 
-  const [exampleState, setExampleState] = useState(/*initialElements*/);
+  const [exampleState, setExampleState] = useState(initialElements);
   const [idx, incr] = useState(0);
 
   const addTask = () => {
@@ -21,44 +20,52 @@ export default function Home ({navigation}) {
     incr(idx + 1);
     setExampleState(newArray);
     changeEl(newArray);
+    
   }
 
-    //--------------Task Component---------------//
-    function Task({task, navigation, route}) {
-      return(
-      <View>
-        <StyledView onPress={() => {
-          alert("Details")
-          navigation.navigate("Details")
-        }}>
-            <TaskTittle>{task.tittle}#</TaskTittle>
-            <StyledTextInput placeholder="Texto da tarefa..."></StyledTextInput>
-        </StyledView>
-      </View>
-      )
-    }
+  let titulor = "tarefa" + exampleState.length;
+
+  function Task({task}) {
+    return(
+      <TaskStyle onPress={() => {
+        navigation.navigate({
+          name: "Details",
+          params: {post: task}
+        })
+      }}>
+        <TaskTittle>{task}</TaskTittle>
+        <TaskTextContainer>
+          <TaskText>Texto...</TaskText>
+        </TaskTextContainer>
+      </TaskStyle>
+    )
+  }
 
   return (
     <Container>
-      <Content>
-        <Header>
-          <HeaderTittle/>
-        </Header>
-      
       <Main>
-          <AddBlock>
-            <Tittle>Adicione aqui uma Tarefa</Tittle>
-            <InputText placeholder="Tarefa"></InputText>
-            <AddTaskButton onPress={addTask}>Adicionar tarefa</AddTaskButton>
-          </AddBlock>
-          <PlaneList
-            data={exampleState}
-            renderItem= {( {item}) => <Task task={item, "Details"} ></Task>
-            }
-          />
-        </Main>
-    </Content>
-    
-  </Container>
+        {/* <AddTaskHolder>
+          <AddTaskTittle>Adicionar tarefa</AddTaskTittle>
+          <TaskInputHolder>
+            <AddTaskInput placeholder="Insira seu texto aqui"/>
+          </TaskInputHolder>
+          <AddTaskButton onPress={addTask}>Adicionar tarefa</AddTaskButton>
+        </AddTaskHolder> */}
+
+
+        <AddTaskButton onPress={addTask}>+</AddTaskButton>
+        <TaskContainer data={exampleState}
+            renderItem= {(task) => 
+            <Task task={task.item.tittle}/>
+            // <>
+            // <Text>{task.item.tittle}</Text>
+            // <Text>{task.item.id}</Text>
+            // </>
+            }>
+          
+        </TaskContainer>
+        
+      </Main>
+    </Container>
   );
 }
