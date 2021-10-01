@@ -40,6 +40,7 @@ export const Container= styled.View`
     overflow: hidden;
 `;
 
+
 export const Main = styled.View`
     margin-top: 8%;
     width: 100%;
@@ -48,6 +49,18 @@ export const Main = styled.View`
 `;
 
 /*---------------Add Task---------------*/ 
+
+export const DefaultMessage = styled.View`
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    
+`;
+
+export const DefaultText = styled.Text`
+    color: white;
+    font-size: 30px;
+`;
 
 export const AddTaskHolder = styled.View`
     width: 100%;
@@ -125,10 +138,26 @@ export const TaskStyle = styled.TouchableOpacity`
     align-items: center;
 `;
 
+export const TaskTittleContainer = styled.View`
+    width: 100%;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+`;
+
+export const TaskDeleteButton = styled.TouchableOpacity`
+    display: inline;
+    color: rgb(98,0,238);
+    font-weight: 900;
+    align-items: center;
+`;
+
 export const TaskTittle = styled.Text`
+    display: inline;
     font-size: 1.5rem;
     font-weight: 700;
-    padding: 1rem;
+    
 `;
 
 export const TaskText = styled.Text`
@@ -147,15 +176,29 @@ export const TaskTextContainer = styled.View`
 export const TaskDetailsContainer = styled.View`
     /* margin-top: 0%; */
     width: 100%;
-    height: 55%;
+    height: 75%;
     background-color: white;
-    border-radius: 0.8rem;
     align-items: center;
 `;
 
+export const TaskDetailsTittle = styled.TextInput`
+    padding-left: 20px;
+    font-size: 40px;
+    width: 100%;
+    border-color: purple;
+    border-width: 0px 0px 5px 0px;
+`;
+
+export const Divider = styled.View`
+    width: 100%;
+    background-color: purple;
+    height: 5px;
+`;
 export const TaskDetaisInputText = styled.TextInput`
+    height: 100%;
     width: 100%;
     padding: 20px;
+    font-size: 20px;
 `;
 
 export const TaskDetailsButtonsContainer = styled.View`
@@ -168,11 +211,10 @@ export const TaskDetailsButtonsContainer = styled.View`
 `;
 
 export const TaskDetailsEditButton = styled.TouchableOpacity`
-    
     width: 60%;
     /* height: 100%; */
     background-color: #974DFF;
-    border-radius: 0.8rem;
+    border-radius: 8px;
 
     color: white;
     font-weight: 700;
@@ -186,7 +228,7 @@ export const TaskDetailsDeleteButton = styled.TouchableOpacity`
     width: 35%;
     /* height: 100%; */
     background-color: #E8272B;
-    border-radius: 0.8rem;
+    border-radius: 8px;
 
     color: white;
     font-weight: 700;

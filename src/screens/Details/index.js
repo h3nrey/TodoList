@@ -1,23 +1,65 @@
-import React, {UseSate} from 'react';
-import {Container, Header, HeaderTittle, Main, TaskContainer, TaskStyle, TaskTittle, TaskDetailsContainer,TaskDetailsEditButton, TaskDetailsDeleteButton, TaskDetailsButtonsContainer, TaskDetaisInputText} from './../../styles'
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  Container, Divider, TaskDetailsTittle, TaskDetailsContainer,TaskDetailsEditButton, TaskDetailsDeleteButton, TaskDetailsButtonsContainer, TaskDetaisInputText} from './../../styles'
+import { Creators as TaskActions } from "../../store/ducks/tasks";
 
-const Details = ({route}) => {
-  const [value, onChangeText] = React.useState("babu");
+
+const Details = ({route, navigation}) => {
+  const { itemId, itemT, itemD } = route.params;
+  const [taskTitle, setTaskTitle] = useState(itemT);
+  const [taskDescription, setTaskDescription] = useState(itemD);
+
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  function handleAddTask() {
+    dispatch(TaskActions.updateTask(itemId, taskTitle, taskDescription));
+    setTaskTitle("");
+    setTaskDescription("");
+    // Keyboard.dismiss();
+    navigation.navigate("Home");
+  }
+
+  function handleDeleteTask(id) {
+    dispatch(TaskActions.removeTasks(id));
+    dispatch(TaskActions.verifyTask());
+    setTaskTitle("");
+    setTaskDescription("");
+    navigation.navigate("Home");
+  }
 
   return (
     <Container>
-    <Main>
+    {/* <Main> */}
       <TaskDetailsContainer>
-        <TaskTittle>{route.params.post}</TaskTittle>
-        <TaskDetaisInputText multiline numberOfLines={20} onChangeText={text => onChangeText(text)}
-        value={value}/>
+        <TaskDetailsTittle 
+        numberOfLines={10} 
+        placeholder="Tarefa"
+        value={taskTitle}
+        onChangeText={(text) => setTaskTitle(text)}/>
+        <Divider />
+        <TaskDetaisInputText 
+        multiline 
+        numberOfLines={20} 
+        value={taskDescription}
+        onChangeText={(text) => setTaskDescription(text)}
+        />
       </TaskDetailsContainer>
       <TaskDetailsButtonsContainer>
 
-      <TaskDetailsEditButton>Editar</TaskDetailsEditButton>
-        <TaskDetailsDeleteButton>Deletar</TaskDetailsDeleteButton>
+      <TaskDetailsEditButton
+        onPress={() => {
+          handleAddTask();
+        }}>Salvar
+      </TaskDetailsEditButton>
+
+      <TaskDetailsDeleteButton 
+        onPress={() => {
+          handleDeleteTask(itemId);
+        }}>Deletar</TaskDetailsDeleteButton>
       </TaskDetailsButtonsContainer>
-    </Main>
+    {/* </Main> */}
   </Container>
   );
 }

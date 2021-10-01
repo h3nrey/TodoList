@@ -1,41 +1,71 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {Container, Header, HeaderTittle, Main, AddTaskHolder, AddTaskTittle, AddTaskInput, AddTaskButton, TaskInputHolder, TaskContainer, TaskStyle, TaskTittle, TaskTextContainer, TaskText} from './../../styles'
-
-
+import {DefaultMessage, DefaultText, Container, Main, AddTaskButton, TaskDeleteButton, TaskTittleContainer, TaskContainer, TaskStyle, TaskTittle, TaskTextContainer, TaskText} from './../../styles'
+import { useSelector, useDispatch } from "react-redux";
+import { Creators as TaskActions } from "../../store/ducks/tasks";
 export default function Home ({navigation}) {
 
-  //--------------Add Task Arrays---------------//
-  const [initialElements, changeEl]  = useState([
-    // { id : "0", tittle : "Object 1"},
-    // { id : "1", tittle : "Object 2"},
-  ]);
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
 
-  const [exampleState, setExampleState] = useState(initialElements);
-  const [idx, incr] = useState(0);
+  useEffect(() => {
+    state.tasks.data;
+    console.log(state.tasks.data);
+  }), ([]);
 
-  const addTask = () => {
-    var newArray = [...initialElements , {id : idx, tittle: "Tarefa " + (idx+1) }];
-    incr(idx + 1);
-    setExampleState(newArray);
-    changeEl(newArray);
-    
+  //--------------Add Task---------------//
+  function handleEditTask(item) {
+    navigation.navigate("Details", {
+      itemId: item.id,
+      itemT: item.title,
+      itemD: item.description,
+    });
   }
 
-  let titulor = "tarefa" + exampleState.length;
+  //--------------Add Task---------------//
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
+  function handleAddTask() {
+    dispatch(TaskActions.addTasks(taskTitle, taskDescription));
+    setTaskTitle("Tarefa");
+    setTaskDescription("");
+    //Keyboard.dismiss();
+    // navigation.navigate("Home");
+  }
 
-  function Task({task}) {
+  //--------------Delete Task---------------//
+  function handleDeleteTask(id) {
+    dispatch(TaskActions.removeTasks(id));
+    dispatch(TaskActions.verifyTask());
+    setTaskTitle("");
+    setTaskDescription("");
+    navigation.navigate("Home");
+  }
+
+  const DefaultItemInList = () => {
+    return (
+      <DefaultMessage>
+        <DefaultText>Sem tarefas :/ </DefaultText>
+      </DefaultMessage>
+    )
+  }
+
+  function Task({item}) {
+    // if(item.title == undefined || item.title == null) {
+    //   item.tittle = item.id;
+    // }
     return(
-      <TaskStyle onPress={() => {
-        navigation.navigate({
-          name: "Details",
-          params: {post: task}
-        })
-      }}>
-        <TaskTittle>{task}</TaskTittle>
+      <TaskStyle onPress={() => handleEditTask(item)}>
+        <TaskTittleContainer>
+        <TaskTittle>{item.title} </TaskTittle>
+        <TaskDeleteButton onPress={() => {
+          dispatch(TaskActions.removeTasks(item.id)) &&
+              dispatch(TaskActions.verifyTask())}}
+        >X</TaskDeleteButton>
+        </TaskTittleContainer>
         <TaskTextContainer>
-          <TaskText>Texto...</TaskText>
+          <TaskText>{item.description}</TaskText>
         </TaskTextContainer>
       </TaskStyle>
     )
@@ -53,17 +83,13 @@ export default function Home ({navigation}) {
         </AddTaskHolder> */}
 
 
-        <AddTaskButton onPress={addTask}>+</AddTaskButton>
-        <TaskContainer data={exampleState}
-            renderItem= {(task) => 
-            <Task task={task.item.tittle}/>
-            // <>
-            // <Text>{task.item.tittle}</Text>
-            // <Text>{task.item.id}</Text>
-            // </>
-            }>
-          
-        </TaskContainer>
+        <TaskContainer 
+          data={state.tasks.data}
+          renderItem={Task}
+          keyExtractor={(item) => item.id}
+          ListEmptyComponent={DefaultItemInList}
+        />/
+        <AddTaskButton onPress={handleAddTask}>+</AddTaskButton>
         
       </Main>
     </Container>
